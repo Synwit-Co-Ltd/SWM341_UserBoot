@@ -50,6 +50,10 @@ int main(void)
 }
 
 
+/* 注意：不能使用 O0 优化等级编译 JumpToApp() 函数
+ * 因为 O0 优化等级下，编译器 AC6 生成的指令会先将 pc 的值压入栈中，在执行 ResetHandler() 时
+ * 弹出使用，但在此之前 __set_MSP(sp) 已经修改了栈指针，导致跳转目的地址错误
+*/
 void JumpToApp(uint32_t addr)
 {
 	uint32_t sp = *((volatile uint32_t *)(addr));
